@@ -3,68 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trendr.web - Claymorphic Dashboard</title>
+    <title>Trendr.web - Premium Claymorphic Social Dashboard</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Grotesk:wght@500;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Grotesk:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
         
         :root {
-            --bg: #F0F3F9;
+            --bg: #Eef2f9;
             --panel-bg: #F7FAFF;
-            --text-main: #2A2F3D;
-            --text-muted: #6E7787;
-            --border: rgba(255, 255, 255, 0.7);
-            --clay-card: inset 2px 2px 4px rgba(255,255,255,0.9), inset -2px -2px 4px rgba(165,180,210,0.3), 6px 12px 24px rgba(165,180,210,0.4);
-            --clay-btn: inset 1px 1px 3px rgba(255,255,255,0.8), inset -1px -1px 3px rgba(0,0,0,0.1), 3px 6px 12px rgba(165,180,210,0.3);
-            --love-pink: #FF8EAA;
-            --love-bg: #FFEBF0;
-            --trust-blue: #6C9EFF;
-            --trust-bg: #EEF4FF;
-            --connect-purple: #A886FF;
-            --connect-bg: #F4F0FF;
+            --text-main: #1E2229;
+            --text-muted: #626A7A;
+            --border: rgba(255, 255, 255, 0.8);
+            
+            /* High-Fidelity Claymorphism Shadows */
+            --clay-depth: inset 3px 3px 6px rgba(255,255,255,0.9), inset -3px -3px 6px rgba(165,180,210,0.35), 8px 16px 32px rgba(165,180,210,0.45);
+            --clay-btn: inset 1px 2px 3px rgba(255,255,255,0.8), inset -1px -2px 3px rgba(0,0,0,0.08), 3px 6px 12px rgba(165,180,210,0.3);
+            --clay-pressed: inset 2px 2px 5px rgba(0,0,0,0.05), inset -2px -2px 5px rgba(255,255,255,0.8);
+            
+            /* Dynamic Aesthetic Accents */
+            --love-pink: #FF7B9A;
+            --love-bg: #FFE8EE;
+            --trust-blue: #548CFF;
+            --trust-bg: #E8EFFF;
+            --connect-purple: #926CFF;
+            --connect-bg: #F0EBFF;
+            --match-green: #3cd070;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: all 0.25s ease; }
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: var(--bg);
             color: var(--text-main);
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
+        /* NAVIGATION BAR */
         header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 16px 40px;
+            padding: 20px 48px;
             background-color: var(--panel-bg);
             border-bottom: 2px solid var(--border);
-            box-shadow: var(--clay-card);
+            box-shadow: var(--clay-depth);
             position: sticky;
             top: 0;
             z-index: 100;
-            border-radius: 0 0 24px 24px;
+            border-radius: 0 0 28px 28px;
         }
 
-        .logo-area { display: flex; align-items: center; gap: 12px; }
+        .logo-area { display: flex; align-items: center; gap: 14px; cursor: pointer; }
         .logo-icon {
-            width: 42px;
-            height: 42px;
-            border-radius: 14px;
+            width: 46px;
+            height: 46px;
+            border-radius: 16px;
             background: linear-gradient(135deg, var(--love-pink), var(--connect-purple));
             display: flex;
             align-items: center;
             justify-content: center;
             box-shadow: var(--clay-btn);
             color: white;
-            font-size: 22px;
+            font-size: 24px;
         }
-        .logo-text { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; }
+        .logo-text { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
 
+        .nav-actions { display: flex; align-items: center; gap: 20px; }
         .bag-btn {
             background: var(--love-bg);
             border: 2px solid var(--love-pink);
-            border-radius: 20px;
-            padding: 10px 22px;
+            border-radius: 22px;
+            padding: 12px 26px;
             cursor: pointer;
             box-shadow: var(--clay-btn);
             display: flex;
@@ -72,164 +81,336 @@
             gap: 10px;
             font-weight: 700;
             color: var(--text-main);
+            font-size: 15px;
         }
+        .bag-btn:active { box-shadow: var(--clay-pressed); }
 
+        /* INTERACTIVE MAIN WORKSPACE */
         main {
             display: grid;
-            grid-template-columns: 1fr 440px 1fr;
-            gap: 32px;
+            grid-template-columns: 340px 1fr 360px;
+            gap: 36px;
             padding: 40px;
-            max-width: 1600px;
+            max-width: 1650px;
             margin: 0 auto;
         }
 
         .panel {
             background-color: var(--panel-bg);
-            border-radius: 28px;
-            padding: 24px;
-            box-shadow: var(--clay-card);
+            border-radius: 32px;
+            padding: 28px;
+            box-shadow: var(--clay-depth);
             border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        h3 { font-family: 'Syne', sans-serif; font-size: 20px; margin-bottom: 12px; }
+        h3 { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
         
+        /* BUDDIES LIST FEATURE */
+        .buddy-list { display: flex; flex-direction: column; gap: 14px; }
         .buddy-row {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px;
-            border-radius: 20px;
+            gap: 14px;
+            padding: 14px 18px;
+            border-radius: 22px;
             background: var(--bg);
             box-shadow: var(--clay-btn);
-            margin-bottom: 12px;
+            border: 1px solid transparent;
+            cursor: pointer;
         }
+        .buddy-row:hover { border-color: var(--trust-blue); background: var(--trust-bg); }
+        .avatar { font-size: 28px; width: 44px; height: 44px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--clay-btn); }
+        .buddy-info { flex: 1; }
+        .buddy-name { font-weight: 700; font-size: 15px; }
+        .buddy-status { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+        .match-badge { background: #E2F9EB; color: var(--match-green); font-weight: 700; font-size: 11px; padding: 4px 8px; border-radius: 12px; border: 1px solid rgba(60,208,112,0.3); }
 
+        /* CENTER SWIPER COMPONENT */
+        .swiper-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+        }
         .card-center {
             background-color: var(--panel-bg);
-            border-radius: 32px;
+            border-radius: 40px;
             overflow: hidden;
-            box-shadow: var(--clay-card);
-            border: 4px solid var(--border);
-            text-align: center;
-        }
-
-        .card-img-placeholder {
+            box-shadow: var(--clay-depth);
+            border: 6px solid var(--border);
             width: 100%;
-            height: 300px;
-            background: linear-gradient(135deg, #e0e6ed, #d1dbe5);
+            max-width: 480px;
+            position: relative;
+        }
+        .card-img-holder {
+            width: 100%;
+            height: 380px;
+            background: linear-gradient(135deg, #FFDEE9 0%, #B5FFFC 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 48px;
+            font-size: 110px;
+            position: relative;
+            box-shadow: inset 0 -15px 30px rgba(0,0,0,0.04);
         }
-
-        .card-details { padding: 20px; text-align: left; }
-        .price { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; color: var(--love-pink); }
-
-        .actions-row {
-            display: flex;
-            justify-content: center;
-            gap: 24px;
-            margin-top: 20px;
+        .brand-tag {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            padding: 6px 14px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: var(--clay-btn);
         }
-
+        .card-details { padding: 28px; }
+        .card-title { font-family: 'Syne', sans-serif; font-size: 26px; margin-bottom: 8px; font-weight: 800; }
+        .card-desc { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; }
+        
+        .meta-row { display: flex; justify-content: space-between; align-items: center; }
+        .price { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; color: var(--love-pink); }
+        
+        /* INTERACTIVE ACTION BUTTONS */
+        .actions-row { display: flex; gap: 28px; justify-content: center; width: 100%; }
         .action-circle {
-            width: 56px;
-            height: 56px;
+            width: 68px;
+            height: 68px;
             border-radius: 50%;
             background: var(--panel-bg);
             border: 2px solid var(--border);
             box-shadow: var(--clay-btn);
             cursor: pointer;
-            font-size: 20px;
+            font-size: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
+        .action-circle:active { box-shadow: var(--clay-pressed); transform: scale(0.95); }
+        .action-skip { color: var(--text-muted); }
+        .action-skip:hover { background: #F0F2F5; color: #1E2229; }
+        .action-heart { background: var(--love-bg); border-color: var(--love-pink); color: var(--love-pink); font-size: 26px; }
+        .action-heart:hover { background: var(--love-pink); color: white; }
 
-        .action-heart { background: var(--love-bg); border-color: var(--love-pink); color: var(--love-pink); }
-
-        .spotlight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        /* RIGHT STREAM/SPOTLIGHT PANEL */
+        .spotlight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
         .spotlight-item {
             background: var(--bg);
-            border-radius: 20px;
-            padding: 10px;
+            border-radius: 24px;
+            padding: 12px;
             box-shadow: var(--clay-btn);
             border: 1px solid var(--border);
+            text-align: center;
+            cursor: pointer;
         }
-        .mini-img { width: 100%; height: 100px; background: #e0e6ed; border-radius: 14px; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        .spotlight-item:hover { transform: translateY(-4px); border-color: var(--connect-purple); }
+        .mini-img { width: 100%; height: 110px; background: white; border-radius: 18px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; font-size: 36px; box-shadow: inset 1px 1px 4px rgba(0,0,0,0.05); }
+        .mini-title { font-size: 13px; font-weight: 700; color: var(--text-main); }
 
-        @media(max-width: 1200px) {
-            main { grid-template-columns: 1fr; }
+        /* VOUCHER & LIVE STATS */
+        .premium-box { background: var(--trust-bg); border-color: var(--trust-blue); border-radius: 24px; padding: 20px; box-shadow: var(--clay-depth); position: relative; overflow: hidden; }
+        .premium-box::after { content: '🎁'; position: absolute; right: -10px; bottom: -10px; font-size: 64px; opacity: 0.15; }
+        .voucher-title { color: var(--trust-blue); font-size: 13px; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; }
+        .voucher-code { font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700; color: var(--text-main); }
+
+        /* RESPONSIVE BREAKPOINTS */
+        @media(max-width: 1250px) {
+            main { grid-template-columns: 1fr; gap: 32px; padding: 24px; }
         }
     </style>
 </head>
 <body>
 
+    <!-- INTERACTIVE HEADER -->
     <header>
-        <div class="logo-area">
+        <div class="logo-area" onclick="resetApp()">
             <div class="logo-icon">✦</div>
             <div class="logo-text">Trendr<span style="color: var(--love-pink)">.</span>web</div>
         </div>
-        <button class="bag-btn">🛍️ <span>Bag (1)</span></button>
+        <div class="nav-actions">
+            <button class="bag-btn" onclick="openBag()">🛍️ <span>Bag (<span id="bag-count">1</span>)</span></button>
+        </div>
     </header>
 
+    <!-- CONTENT LAYOUT -->
     <main>
-        <!-- LEFT PANEL -->
-        <section style="display: flex; flex-direction: column; gap: 24px;">
+        <!-- LEFT WORKSPACE PANEL -->
+        <section style="display: flex; flex-direction: column; gap: 32px;">
             <div class="panel">
-                <h3>👯 Shopping Buddies</h3>
-                <div class="buddy-row">
-                    <div style="font-size: 24px;">👩🏻</div>
-                    <div style="flex: 1; font-size: 14px; font-weight:700;">Ananya S. <span style="color: var(--trust-blue); font-size:11px;">94% match</span></div>
-                </div>
-                <div class="buddy-row">
-                    <div style="font-size: 24px;">👩🏽</div>
-                    <div style="flex: 1; font-size: 14px; font-weight:700;">Riya K. <span style="color: var(--trust-blue); font-size:11px;">89% match</span></div>
-                </div>
-            </div>
-
-            <div class="panel" style="background-color: var(--trust-bg)">
-                <h3 style="color: var(--trust-blue)">🎁 Active Voucher</h3>
-                <div style="font-weight: 700;">TRENDR40 (40% OFF)</div>
-            </div>
-        </section>
-
-        <!-- CENTER SWIPER -->
-        <section>
-            <div class="card-center">
-                <div class="card-img-placeholder">👗</div>
-                <div class="card-details">
-                    <div style="font-size: 11px; font-weight: 700; color: var(--text-muted);">ZARA</div>
-                    <h2 style="font-family: 'Syne', sans-serif; font-size: 24px; margin-bottom: 8px;">Ribbed Knit Co-ord Set</h2>
-                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Effortlessly chic ribbed knit set. Perfect for friendly social hangouts and coffee dates.</p>
-                    <div class="price">₹3,299</div>
-                </div>
-            </div>
-
-            <div class="actions-row">
-                <button class="action-circle">✕</button>
-                <button class="action-circle action-heart">♥</button>
-            </div>
-        </section>
-
-        <!-- RIGHT PANEL -->
-        <section>
-            <div class="panel">
-                <h3>🔍 Catalog Spotlight</h3>
-                <div class="spotlight-grid">
-                    <div class="spotlight-item">
-                        <div class="mini-img">🧥</div>
-                        <div style="font-size: 12px; font-weight: 700;">Leather Jacket</div>
+                <h3><span>👯</span> Shopping Buddies</h3>
+                <div class="buddy-list">
+                    <div class="buddy-row" onclick="filterBuddy('Ananya')">
+                        <div class="avatar">👩🏻</div>
+                        <div class="buddy-info">
+                            <div class="buddy-name">Ananya S.</div>
+                            <div class="buddy-status">Typing...</div>
+                        </div>
+                        <div class="match-badge">94%</div>
                     </div>
-                    <div class="spotlight-item">
+                    <div class="buddy-row" onclick="filterBuddy('Riya')">
+                        <div class="avatar">👩🏽</div>
+                        <div class="buddy-info">
+                            <div class="buddy-name">Riya K.</div>
+                            <div class="buddy-status">Viewing Jackets</div>
+                        </div>
+                        <div class="match-badge">89%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="premium-box">
+                <div class="voucher-title">Active Match Voucher</div>
+                <div class="voucher-code">TRENDR40 (40% OFF)</div>
+            </div>
+        </section>
+
+        <!-- CENTER SWIPER (DYNAMIC ENGINE) -->
+        <section class="swiper-container">
+            <div class="card-center" id="main-card">
+                <span class="brand-tag" id="card-brand">ZARA</span>
+                <div class="card-img-holder" id="card-image" style="background: linear-gradient(135deg, #FFDEE9 0%, #B5FFFC 100%);">👗</div>
+                <div class="card-details">
+                    <h2 class="card-title" id="card-title">Ribbed Knit Set</h2>
+                    <p class="card-desc" id="card-desc">Effortlessly chic ribbed knit set. Perfect for friendly social hangouts and weekend coffee dates.</p>
+                    <div class="meta-row">
+                        <div class="price" id="card-price">₹3,299</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INTERACTIVE STEERING BUTTONS -->
+            <div class="actions-row">
+                <button class="action-circle action-skip" onclick="handleSwipe('skip')">✕</button>
+                <button class="action-circle action-heart" onclick="handleSwipe('like')">♥</button>
+            </div>
+        </section>
+
+        <!-- RIGHT SPOTLIGHT PANEL -->
+        <section style="display: flex; flex-direction: column; gap: 32px;">
+            <div class="panel">
+                <h3><span>🔍</span> Catalog Spotlight</h3>
+                <div class="spotlight-grid">
+                    <div class="spotlight-item" onclick="loadItem(1)">
+                        <div class="mini-img">🧥</div>
+                        <div class="mini-title">Biker Jacket</div>
+                    </div>
+                    <div class="spotlight-item" onclick="loadItem(2)">
                         <div class="mini-img">👖</div>
-                        <div style="font-size: 12px; font-weight: 700;">Cargo Pants</div>
+                        <div class="mini-title">Cargo Pants</div>
+                    </div>
+                    <div class="spotlight-item" onclick="loadItem(3)">
+                        <div class="mini-img">🕶️</div>
+                        <div class="mini-title">Y2K Shades</div>
+                    </div>
+                    <div class="spotlight-item" onclick="loadItem(0)">
+                        <div class="mini-img">👗</div>
+                        <div class="mini-title">Co-ord Knit</div>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
+    <!-- INTERACTIVE APP LOGIC ENGINE -->
+    <script>
+        // Full Rich Dynamic App State
+        const products = [
+            {
+                title: "Ribbed Knit Set",
+                brand: "ZARA",
+                desc: "Effortlessly chic ribbed knit set. Perfect for friendly social hangouts and weekend coffee dates.",
+                price: "₹3,299",
+                emoji: "👗",
+                gradient: "linear-gradient(135deg, #FFDEE9 0%, #B5FFFC 100%)"
+            },
+            {
+                title: "Oversized Leather Biker",
+                brand: "H&M Premium",
+                desc: "Heavyweight drop-shoulder faux leather jacket with metallic accents and premium lining.",
+                price: "₹5,999",
+                emoji: "🧥",
+                gradient: "linear-gradient(135deg, #64748b 0%, #475569 100%)"
+            },
+            {
+                title: "Parachute Cargo Pants",
+                brand: "Uniqlo",
+                desc: "Ultra-wide dynamic fit with adjustable drawstrings and weather-resistant tactical ripstop fabric.",
+                price: "₹2,990",
+                emoji: "👖",
+                gradient: "linear-gradient(135deg, #a8ff78 0%, #78ffd6 100%)"
+            },
+            {
+                title: "Tinted Y2K Sunglasses",
+                brand: "Prada Eyewear",
+                desc: "Frameless rimless futuristic look with soft purple gradient lenses and silver accents.",
+                price: "₹14,500",
+                emoji: "🕶️",
+                gradient: "linear-gradient(135deg, #f1c40f 0%, #e67e22 100%)"
+            }
+        ];
+
+        let currentIndex = 0;
+        let bagItemsCount = 1;
+
+        function updateCard(index) {
+            const card = document.getElementById('main-card');
+            
+            // Micro-animation swipe exit effect
+            card.style.transform = 'scale(0.95)';
+            card.style.opacity = '0.5';
+            
+            setTimeout(() => {
+                const item = products[index];
+                document.getElementById('card-title').innerText = item.title;
+                document.getElementById('card-brand').innerText = item.brand;
+                document.getElementById('card-desc').innerText = item.desc;
+                document.getElementById('card-price').innerText = item.price;
+                
+                const imgHolder = document.getElementById('card-image');
+                imgHolder.innerText = item.emoji;
+                imgHolder.style.background = item.gradient;
+                
+                // Entrance animation
+                card.style.transform = 'scale(1)';
+                card.style.opacity = '1';
+            }, 180);
+        }
+
+        function handleSwipe(action) {
+            if (action === 'like') {
+                bagItemsCount++;
+                document.getElementById('bag-count').innerText = bagItemsCount;
+                alert(`Added ${products[currentIndex].title} to your Shared Bag!`);
+            }
+            
+            // Move to next product infinitely
+            currentIndex = (currentIndex + 1) % products.length;
+            updateCard(currentIndex);
+        }
+
+        function loadItem(index) {
+            currentIndex = index;
+            updateCard(currentIndex);
+        }
+
+        function filterBuddy(name) {
+            alert(`Opening synchronized shop streaming dashboard with ${name}...`);
+        }
+
+        function openBag() {
+            alert(`Your dynamic shopping bag has ${bagItemsCount} curated collection items loaded.`);
+        }
+
+        function resetApp() {
+            currentIndex = 0;
+            updateCard(0);
+        }
+    </script>
 </body>
 </html>
