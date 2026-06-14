@@ -1,416 +1,569 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trendr.web - Premium Claymorphic Social Dashboard</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Grotesk:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
-        
-        :root {
-            --bg: #Eef2f9;
-            --panel-bg: #F7FAFF;
-            --text-main: #1E2229;
-            --text-muted: #626A7A;
-            --border: rgba(255, 255, 255, 0.8);
-            
-            /* High-Fidelity Claymorphism Shadows */
-            --clay-depth: inset 3px 3px 6px rgba(255,255,255,0.9), inset -3px -3px 6px rgba(165,180,210,0.35), 8px 16px 32px rgba(165,180,210,0.45);
-            --clay-btn: inset 1px 2px 3px rgba(255,255,255,0.8), inset -1px -2px 3px rgba(0,0,0,0.08), 3px 6px 12px rgba(165,180,210,0.3);
-            --clay-pressed: inset 2px 2px 5px rgba(0,0,0,0.05), inset -2px -2px 5px rgba(255,255,255,0.8);
-            
-            /* Dynamic Aesthetic Accents */
-            --love-pink: #FF7B9A;
-            --love-bg: #FFE8EE;
-            --trust-blue: #548CFF;
-            --trust-bg: #E8EFFF;
-            --connect-purple: #926CFF;
-            --connect-bg: #F0EBFF;
-            --match-green: #3cd070;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trendr.web — Claymorphic Shopping Feed</title>
+  
+  <!-- React, React DOM, and Babel CDNs to run React natively in a single HTML file -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-        * { margin: 0; padding: 0; box-sizing: border-box; transition: all 0.25s ease; }
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg);
-            color: var(--text-main);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
-        /* NAVIGATION BAR */
-        header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px 48px;
-            background-color: var(--panel-bg);
-            border-bottom: 2px solid var(--border);
-            box-shadow: var(--clay-depth);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-radius: 0 0 28px 28px;
-        }
+    * { 
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box; 
+      -webkit-tap-highlight-color: transparent; 
+    }
+    
+    body { 
+      font-family: 'Plus Jakarta Sans', sans-serif; 
+      transition: background-color 0.4s ease, color 0.4s ease;
+      overflow-x: hidden;
+    }
+    
+    /* Smooth Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
+    .dark-mode-global ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
 
-        .logo-area { display: flex; align-items: center; gap: 14px; cursor: pointer; }
-        .logo-icon {
-            width: 46px;
-            height: 46px;
-            border-radius: 16px;
-            background: linear-gradient(135deg, var(--love-pink), var(--connect-purple));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--clay-btn);
-            color: white;
-            font-size: 24px;
-        }
-        .logo-text { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
+    /* Layout Responsive Grid */
+    .responsive-dashboard-grid {
+      display: grid; 
+      grid-template-columns: 1fr 440px 1fr; 
+      gap: 32px;
+      padding: 40px; 
+      max-width: 1600px; 
+      margin: 0 auto; 
+      box-sizing: border-box;
+    }
 
-        .nav-actions { display: flex; align-items: center; gap: 20px; }
-        .bag-btn {
-            background: var(--love-bg);
-            border: 2px solid var(--love-pink);
-            border-radius: 22px;
-            padding: 12px 26px;
-            cursor: pointer;
-            box-shadow: var(--clay-btn);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-            color: var(--text-main);
-            font-size: 15px;
-        }
-        .bag-btn:active { box-shadow: var(--clay-pressed); }
+    @media(max-width: 1200px) {
+      .responsive-dashboard-grid { 
+        grid-template-columns: 1fr !important; 
+      }
+    }
 
-        /* INTERACTIVE MAIN WORKSPACE */
-        main {
-            display: grid;
-            grid-template-columns: 340px 1fr 360px;
-            gap: 36px;
-            padding: 40px;
-            max-width: 1650px;
-            margin: 0 auto;
-        }
-
-        .panel {
-            background-color: var(--panel-bg);
-            border-radius: 32px;
-            padding: 28px;
-            box-shadow: var(--clay-depth);
-            border: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        h3 { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
-        
-        /* BUDDIES LIST FEATURE */
-        .buddy-list { display: flex; flex-direction: column; gap: 14px; }
-        .buddy-row {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 14px 18px;
-            border-radius: 22px;
-            background: var(--bg);
-            box-shadow: var(--clay-btn);
-            border: 1px solid transparent;
-            cursor: pointer;
-        }
-        .buddy-row:hover { border-color: var(--trust-blue); background: var(--trust-bg); }
-        .avatar { font-size: 28px; width: 44px; height: 44px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--clay-btn); }
-        .buddy-info { flex: 1; }
-        .buddy-name { font-weight: 700; font-size: 15px; }
-        .buddy-status { font-size: 12px; color: var(--text-muted); font-weight: 500; }
-        .match-badge { background: #E2F9EB; color: var(--match-green); font-weight: 700; font-size: 11px; padding: 4px 8px; border-radius: 12px; border: 1px solid rgba(60,208,112,0.3); }
-
-        /* CENTER SWIPER COMPONENT */
-        .swiper-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 24px;
-        }
-        .card-center {
-            background-color: var(--panel-bg);
-            border-radius: 40px;
-            overflow: hidden;
-            box-shadow: var(--clay-depth);
-            border: 6px solid var(--border);
-            width: 100%;
-            max-width: 480px;
-            position: relative;
-        }
-        .card-img-holder {
-            width: 100%;
-            height: 380px;
-            background: linear-gradient(135deg, #FFDEE9 0%, #B5FFFC 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 110px;
-            position: relative;
-            box-shadow: inset 0 -15px 30px rgba(0,0,0,0.04);
-        }
-        .brand-tag {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(8px);
-            padding: 6px 14px;
-            border-radius: 14px;
-            font-weight: 700;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: var(--clay-btn);
-        }
-        .card-details { padding: 28px; }
-        .card-title { font-family: 'Syne', sans-serif; font-size: 26px; margin-bottom: 8px; font-weight: 800; }
-        .card-desc { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; }
-        
-        .meta-row { display: flex; justify-content: space-between; align-items: center; }
-        .price { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; color: var(--love-pink); }
-        
-        /* INTERACTIVE ACTION BUTTONS */
-        .actions-row { display: flex; gap: 28px; justify-content: center; width: 100%; }
-        .action-circle {
-            width: 68px;
-            height: 68px;
-            border-radius: 50%;
-            background: var(--panel-bg);
-            border: 2px solid var(--border);
-            box-shadow: var(--clay-btn);
-            cursor: pointer;
-            font-size: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .action-circle:active { box-shadow: var(--clay-pressed); transform: scale(0.95); }
-        .action-skip { color: var(--text-muted); }
-        .action-skip:hover { background: #F0F2F5; color: #1E2229; }
-        .action-heart { background: var(--love-bg); border-color: var(--love-pink); color: var(--love-pink); font-size: 26px; }
-        .action-heart:hover { background: var(--love-pink); color: white; }
-
-        /* RIGHT STREAM/SPOTLIGHT PANEL */
-        .spotlight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        .spotlight-item {
-            background: var(--bg);
-            border-radius: 24px;
-            padding: 12px;
-            box-shadow: var(--clay-btn);
-            border: 1px solid var(--border);
-            text-align: center;
-            cursor: pointer;
-        }
-        .spotlight-item:hover { transform: translateY(-4px); border-color: var(--connect-purple); }
-        .mini-img { width: 100%; height: 110px; background: white; border-radius: 18px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; font-size: 36px; box-shadow: inset 1px 1px 4px rgba(0,0,0,0.05); }
-        .mini-title { font-size: 13px; font-weight: 700; color: var(--text-main); }
-
-        /* VOUCHER & LIVE STATS */
-        .premium-box { background: var(--trust-bg); border-color: var(--trust-blue); border-radius: 24px; padding: 20px; box-shadow: var(--clay-depth); position: relative; overflow: hidden; }
-        .premium-box::after { content: '🎁'; position: absolute; right: -10px; bottom: -10px; font-size: 64px; opacity: 0.15; }
-        .voucher-title { color: var(--trust-blue); font-size: 13px; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; }
-        .voucher-code { font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700; color: var(--text-main); }
-
-        /* RESPONSIVE BREAKPOINTS */
-        @media(max-width: 1250px) {
-            main { grid-template-columns: 1fr; gap: 32px; padding: 24px; }
-        }
-    </style>
+    /* Tactile Animations */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.9) translateY(10px); opacity: 0; }
+      100% { transform: scale(1) translateY(0); opacity: 1; }
+    }
+    .float-ui { animation: float 4s ease-in-out infinite; }
+    .pop-card { animation: popIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+  </style>
 </head>
 <body>
 
-    <!-- INTERACTIVE HEADER -->
-    <header>
-        <div class="logo-area" onclick="resetApp()">
-            <div class="logo-icon">✦</div>
-            <div class="logo-text">Trendr<span style="color: var(--love-pink)">.</span>web</div>
-        </div>
-        <div class="nav-actions">
-            <button class="bag-btn" onclick="openBag()">🛍️ <span>Bag (<span id="bag-count">1</span>)</span></button>
-        </div>
-    </header>
+  <div id="root"></div>
 
-    <!-- CONTENT LAYOUT -->
-    <main>
-        <!-- LEFT WORKSPACE PANEL -->
-        <section style="display: flex; flex-direction: column; gap: 32px;">
-            <div class="panel">
-                <h3><span>👯</span> Shopping Buddies</h3>
-                <div class="buddy-list">
-                    <div class="buddy-row" onclick="filterBuddy('Ananya')">
-                        <div class="avatar">👩🏻</div>
-                        <div class="buddy-info">
-                            <div class="buddy-name">Ananya S.</div>
-                            <div class="buddy-status">Typing...</div>
-                        </div>
-                        <div class="match-badge">94%</div>
-                    </div>
-                    <div class="buddy-row" onclick="filterBuddy('Riya')">
-                        <div class="avatar">👩🏽</div>
-                        <div class="buddy-info">
-                            <div class="buddy-name">Riya K.</div>
-                            <div class="buddy-status">Viewing Jackets</div>
-                        </div>
-                        <div class="match-badge">89%</div>
-                    </div>
-                </div>
+  <!-- Babel script compilation type to parse JSX strings directly -->
+  <script type="text/babel">
+    const { useState, useRef, useEffect } = React;
+
+    /* ─── DESIGN SYSTEM TOKENS (Claymorphism & Psychology Tones) ─── */
+    const TOKENS = {
+      light: {
+        bg: "#F0F3F9",
+        panelBg: "#F7FAFF",
+        textMain: "#2A2F3D",
+        textMuted: "#6E7787",
+        border: "rgba(255, 255, 255, 0.7)",
+        clayCard: "inset 2px 2px 4px rgba(255,255,255,0.9), inset -2px -2px 4px rgba(165,180,210,0.3), 6px 12px 24px rgba(165,180,210,0.4)",
+        clayBtn: "inset 1px 1px 3px rgba(255,255,255,0.8), inset -1px -1px 3px rgba(0,0,0,0.1), 3px 6px 12px rgba(165,180,210,0.3)",
+        clayInput: "inset 2px 2px 5px rgba(0,0,0,0.05), inset -2px -2px 5px rgba(255,255,255,0.8), 0px 2px 4px rgba(0,0,0,0.02)",
+        lovePink: "#FF8EAA",    
+        loveBg: "#FFEBF0",
+        trustBlue: "#6C9EFF",   
+        trustBg: "#EEF4FF",
+        connectPurple: "#A886FF", 
+        connectBg: "#F4F0FF",
+        successMint: "#62D2A2",  
+        successBg: "#EFFFF9"
+      },
+      dark: {
+        bg: "#181C26",
+        panelBg: "#1F2432",
+        textMain: "#F1F5F9",
+        textMuted: "#94A3B8",
+        border: "rgba(255, 255, 255, 0.04)",
+        clayCard: "inset 2px 2px 4px rgba(255,255,255,0.08), inset -3px -3px 6px rgba(0,0,0,0.4), 8px 16px 32px rgba(0,0,0,0.5)",
+        clayBtn: "inset 1px 1px 2px rgba(255,255,255,0.15), inset -2px -2px 4px rgba(0,0,0,0.4), 4px 8px 16px rgba(0,0,0,0.3)",
+        clayInput: "inset 2px 2px 5px rgba(0,0,0,0.3), inset -1px -1px 3px rgba(255,255,255,0.05)",
+        lovePink: "#FF6584",
+        loveBg: "rgba(255,101,132,0.12)",
+        trustBlue: "#4A85FF",
+        trustBg: "rgba(74,133,255,0.12)",
+        connectPurple: "#9065FF",
+        connectBg: "rgba(144,101,255,0.12)",
+        successMint: "#3CD092",
+        successBg: "rgba(60,208,146,0.12)"
+      }
+    };
+
+    const INITIAL_PRODUCTS = [
+      { id: "p1", name: "Ribbed Knit Co-ord Set", brand: "ZARA", price: 3299, orig: 5999, img: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80", tags: ["Trending", "New Look"], rating: 4.8, reviews: 2341, category: "Tops", desc: "Effortlessly chic ribbed knit set. Perfect for friendly social hangouts and outdoor coffee dates.", sizes: ["S", "M", "L"] },
+      { id: "p2", name: "Oversized Leather Jacket", brand: "H&M", price: 4999, orig: 7999, img: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&q=80", tags: ["Hot Item"], rating: 4.6, reviews: 1829, category: "Tops", desc: "Bold oversized leather jacket with premium hardware configuration. Built to last.", sizes: ["M", "L", "XL"] },
+      { id: "p3", name: "Y2K Cargo Pants", brand: "Zudio", price: 1499, orig: 2499, img: "https://images.unsplash.com/photo-1594938298603-c8148c4b4ae4?w=600&q=80", tags: ["Y2K", "Classic"], rating: 4.5, reviews: 987, category: "Bottoms", desc: "Wide-leg relaxed cargo pants with deep utility storage setups.", sizes: ["S", "M"] },
+      { id: "p4", name: "Chunky Platform Boots", brand: "Steve Madden", price: 6799, orig: 9999, img: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=600&q=80", tags: ["Premium"], rating: 4.9, reviews: 3201, category: "Shoes", desc: "Statement aesthetic heavy chunky platform boots. High comfort ergonomics.", sizes: ["38", "39", "40"] }
+    ];
+
+    const COMPANIONS = [
+      { id: "c1", name: "Ananya S.", age: 22, vibe: "Minimalist", match: 94, avatar: "👩🏻", active: true, mall: "Pacific Mall" },
+      { id: "c2", name: "Riya K.", age: 21, vibe: "Y2K Style", match: 89, avatar: "👩🏽", active: true, mall: "Mall of Dehradun" },
+      { id: "c3", name: "Meera T.", age: 23, vibe: "Boho Chic", match: 82, avatar: "👩🏼", active: false, mall: "Centrio Mall" }
+    ];
+
+    const REWARDS = [
+      { id: "r1", code: "TRENDR40", label: "40% OFF", desc: "Mall of Dehradun Exclusive", expires: "2 days" },
+      { id: "r2", code: "CASH15", label: "₹150 Back", desc: "Digital wallet cashback system", expires: "5 days" }
+    ];
+
+    function App() {
+      const [isDark, setIsDark] = useState(false);
+      const [bag, setBag] = useState([]); 
+      const [wishlist, setWishlist] = useState(new Set(["p1"]));
+      const [swipeIdx, setSwipeIdx] = useState(0);
+      const [detailProd, setDetailProd] = useState(null);
+      const [toast, setToast] = useState(null);
+      const [isBagOpen, setIsBagOpen] = useState(false);
+      const [connReqs, setConnReqs] = useState(new Set());
+
+      // Interactive Drag-to-Swipe Logic
+      const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+      const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+      const [isDragging, setIsDragging] = useState(false);
+
+      const theme = isDark ? TOKENS.dark : TOKENS.light;
+
+      useEffect(() => {
+        if (isDark) {
+          document.body.classList.add("dark-mode-global");
+        } else {
+          document.body.classList.remove("dark-mode-global");
+        }
+      }, [isDark]);
+
+      const showToast = (msg, emoji = "✨") => {
+        setToast({ msg, emoji });
+        setTimeout(() => setToast(null), 3000);
+      };
+
+      const handleAddToBag = (product, size) => {
+        setBag(prev => [...prev, { ...product, uniqueId: Date.now(), selectedSize: size }]);
+        showToast(`Added ${product.name} (${size}) to your Bag!`, "🛍️");
+      };
+
+      const handleRemoveFromBag = (uniqueId) => {
+        setBag(prev => prev.filter(item => item.uniqueId !== uniqueId));
+        showToast("Removed look configuration from Bag", "🗑️");
+      };
+
+      const toggleWishlist = (id) => {
+        setWishlist(w => {
+          const n = new Set(w);
+          if (n.has(id)) { n.delete(id); showToast("Removed from wishlist", "💔"); }
+          else { n.add(id); showToast("Saved to look wishlist!", "💖"); }
+          return n;
+        });
+      };
+
+      /* ── POINTER GESTURES ENGINE ── */
+      const onPointerDown = (e) => {
+        e.currentTarget.setPointerCapture(e.pointerId);
+        setDragStart({ x: e.clientX, y: e.clientY });
+        setIsDragging(true);
+      };
+
+      const onPointerMove = (e) => {
+        if (!isDragging) return;
+        setDragOffset({
+          x: e.clientX - dragStart.x,
+          y: e.clientY - dragStart.y
+        });
+      };
+
+      const onPointerUp = (e) => {
+        if (!isDragging) return;
+        setIsDragging(false);
+        
+        const threshold = 140;
+        if (dragOffset.x > threshold) {
+          const currentProd = INITIAL_PRODUCTS[swipeIdx];
+          if (currentProd) {
+            setWishlist(w => { const n = new Set(w); n.add(currentProd.id); return n; });
+            showToast(`Loved ${currentProd.name}! Saved.`, "💖");
+          }
+          setSwipeIdx(prev => prev + 1);
+        } else if (dragOffset.x < -threshold) {
+          showToast("Skipped look configuration", "👀");
+          setSwipeIdx(prev => prev + 1);
+        }
+        setDragOffset({ x: 0, y: 0 });
+      };
+
+      const currentProduct = INITIAL_PRODUCTS[swipeIdx] || null;
+
+      return (
+        <div style={{ backgroundColor: theme.bg, color: theme.textMain, minHeight: "100vh", position: "relative", transition: "all 0.3s ease" }}>
+          
+          {/* ── HEADER NAVIGATION ── */}
+          <header style={{ 
+            display: "flex", alignItems: "center", justifyContent: "space-between", 
+            padding: "16px 40px", backgroundColor: theme.panelBg, borderBottom: `2px solid ${theme.border}`,
+            boxShadow: theme.clayCard, position: "sticky", top: 0, zIndex: 100, borderRadius: "0 0 24px 24px"
+          }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+              <div style={{ width: 42, height: 42, borderRadius: "14px", background: `linear-gradient(135deg, ${theme.lovePink}, ${theme.connectPurple})`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: theme.clayBtn }}>
+                <span style={{ fontSize: 22, color: "#FFF" }}>✦</span>
+              </div>
+              <span style={{ fontFamily: "'Syne', sans-serif", fontSize: 26, fontWeight: 800, letterSpacing: "-1px" }}>
+                Trendr<span style={{ color: theme.lovePink }}>.</span>web
+              </span>
             </div>
 
-            <div class="premium-box">
-                <div class="voucher-title">Active Match Voucher</div>
-                <div class="voucher-code">TRENDR40 (40% OFF)</div>
+            <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+              <button onClick={() => setIsDark(!isDark)} className="float-ui" style={{
+                background: theme.panelBg, border: `1px solid ${theme.border}`, borderRadius: "50%",
+                width: 44, height: 44, cursor: "pointer", boxShadow: theme.clayBtn, fontSize: 18,
+                display: "flex", alignItems: "center", justifyContent: "center", transition: "transform 0.2s"
+              }}>
+                {isDark ? "☀️" : "🌙"}
+              </button>
+
+              <button onClick={() => setIsBagOpen(true)} style={{
+                background: theme.loveBg, border: `2px solid ${theme.lovePink}`, borderRadius: "20px",
+                padding: "10px 22px", cursor: "pointer", boxShadow: theme.clayBtn,
+                display: "flex", alignItems: "center", gap: 10, fontWeight: 700, color: theme.textMain
+              }}>
+                <span style={{ fontSize: 18 }}>🛍️</span>
+                <span style={{ fontFamily: "'Space Grotesk', sans-serif" }}>Bag ({bag.length})</span>
+              </button>
             </div>
-        </section>
+          </header>
 
-        <!-- CENTER SWIPER (DYNAMIC ENGINE) -->
-        <section class="swiper-container">
-            <div class="card-center" id="main-card">
-                <span class="brand-tag" id="card-brand">ZARA</span>
-                <div class="card-img-holder" id="card-image" style="background: linear-gradient(135deg, #FFDEE9 0%, #B5FFFC 100%);">👗</div>
-                <div class="card-details">
-                    <h2 class="card-title" id="card-title">Ribbed Knit Set</h2>
-                    <p class="card-desc" id="card-desc">Effortlessly chic ribbed knit set. Perfect for friendly social hangouts and weekend coffee dates.</p>
-                    <div class="meta-row">
-                        <div class="price" id="card-price">₹3,299</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- INTERACTIVE STEERING BUTTONS -->
-            <div class="actions-row">
-                <button class="action-circle action-skip" onclick="handleSwipe('skip')">✕</button>
-                <button class="action-circle action-heart" onclick="handleSwipe('like')">♥</button>
-            </div>
-        </section>
-
-        <!-- RIGHT SPOTLIGHT PANEL -->
-        <section style="display: flex; flex-direction: column; gap: 32px;">
-            <div class="panel">
-                <h3><span>🔍</span> Catalog Spotlight</h3>
-                <div class="spotlight-grid">
-                    <div class="spotlight-item" onclick="loadItem(1)">
-                        <div class="mini-img">🧥</div>
-                        <div class="mini-title">Biker Jacket</div>
-                    </div>
-                    <div class="spotlight-item" onclick="loadItem(2)">
-                        <div class="mini-img">👖</div>
-                        <div class="mini-title">Cargo Pants</div>
-                    </div>
-                    <div class="spotlight-item" onclick="loadItem(3)">
-                        <div class="mini-img">🕶️</div>
-                        <div class="mini-title">Y2K Shades</div>
-                    </div>
-                    <div class="spotlight-item" onclick="loadItem(0)">
-                        <div class="mini-img">👗</div>
-                        <div class="mini-title">Co-ord Knit</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- INTERACTIVE APP LOGIC ENGINE -->
-    <script>
-        // Full Rich Dynamic App State
-        const products = [
-            {
-                title: "Ribbed Knit Set",
-                brand: "ZARA",
-                desc: "Effortlessly chic ribbed knit set. Perfect for friendly social hangouts and weekend coffee dates.",
-                price: "₹3,299",
-                emoji: "👗",
-                gradient: "linear-gradient(135deg, #FFDEE9 0%, #B5FFFC 100%)"
-            },
-            {
-                title: "Oversized Leather Biker",
-                brand: "H&M Premium",
-                desc: "Heavyweight drop-shoulder faux leather jacket with metallic accents and premium lining.",
-                price: "₹5,999",
-                emoji: "🧥",
-                gradient: "linear-gradient(135deg, #64748b 0%, #475569 100%)"
-            },
-            {
-                title: "Parachute Cargo Pants",
-                brand: "Uniqlo",
-                desc: "Ultra-wide dynamic fit with adjustable drawstrings and weather-resistant tactical ripstop fabric.",
-                price: "₹2,990",
-                emoji: "👖",
-                gradient: "linear-gradient(135deg, #a8ff78 0%, #78ffd6 100%)"
-            },
-            {
-                title: "Tinted Y2K Sunglasses",
-                brand: "Prada Eyewear",
-                desc: "Frameless rimless futuristic look with soft purple gradient lenses and silver accents.",
-                price: "₹14,500",
-                emoji: "🕶️",
-                gradient: "linear-gradient(135deg, #f1c40f 0%, #e67e22 100%)"
-            }
-        ];
-
-        let currentIndex = 0;
-        let bagItemsCount = 1;
-
-        function updateCard(index) {
-            const card = document.getElementById('main-card');
+          {/* ── CENTRALIZED FEED DASHBOARD ── */}
+          <main className="responsive-dashboard-grid">
             
-            // Micro-animation swipe exit effect
-            card.style.transform = 'scale(0.95)';
-            card.style.opacity = '0.5';
-            
-            setTimeout(() => {
-                const item = products[index];
-                document.getElementById('card-title').innerText = item.title;
-                document.getElementById('card-brand').innerText = item.brand;
-                document.getElementById('card-desc').innerText = item.desc;
-                document.getElementById('card-price').innerText = item.price;
+            {/* LEFT COMPONENT: COMMUNITY VECTOR */}
+            <section style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+              <div style={{ backgroundColor: theme.panelBg, borderRadius: "28px", padding: "24px", boxShadow: theme.clayCard, border: `1px solid ${theme.border}` }} className="pop-card">
+                <h3 style={{ fontFamily: "'Syne', sans-serif", fontSize: 20, marginBottom: 4, display: "flex", alignItems: "center", gap: 8 }}>
+                  <span>👯</span> Shopping Buddies
+                </h3>
+                <p style={{ color: theme.textMuted, fontSize: 13, marginBottom: 16 }}>Match coordinates computed from look history</p>
                 
-                const imgHolder = document.getElementById('card-image');
-                imgHolder.innerText = item.emoji;
-                imgHolder.style.background = item.gradient;
+                <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                  {COMPANIONS.map(c => (
+                    <div key={c.id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px", borderRadius: "20px", background: theme.bg, boxShadow: theme.clayBtn }}>
+                      <div style={{ fontSize: 26, width: 44, height: 44, borderRadius: "50%", backgroundColor: theme.panelBg, display: "flex", alignItems: "center", justifyContent: "center" }}>{c.avatar}</div>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontWeight: 700, fontSize: 14 }}>{c.name} <span style={{ color: theme.trustBlue, fontSize: 11 }}>{c.match}%</span></div>
+                        <div style={{ fontSize: 11, color: theme.textMuted }}>{c.vibe} • {c.mall}</div>
+                      </div>
+                      <button onClick={() => {
+                        setConnReqs(prev => { const n = new Set(prev); n.add(c.id); return n; });
+                        showToast(`Invite dispatched to ${c.name}`, "💌");
+                      }} disabled={connReqs.has(c.id)} style={{
+                        border: "none", background: connReqs.has(c.id) ? theme.successBg : theme.connectBg,
+                        color: connReqs.has(c.id) ? theme.successMint : theme.connectPurple,
+                        padding: "6px 12px", borderRadius: "12px", fontWeight: 700, fontSize: 12, cursor: "pointer", boxShadow: theme.clayBtn
+                      }}>
+                        {connReqs.has(c.id) ? "✓ Sent" : "Connect"}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div style={{ backgroundColor: theme.panelBg, borderRadius: "28px", padding: "24px", boxShadow: theme.clayCard, border: `1px solid ${theme.border}` }} className="pop-card">
+                <h3 style={{ fontFamily: "'Syne', sans-serif", fontSize: 20, marginBottom: 12 }}>🎁 Verified Vouchers</h3>
+                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                  {REWARDS.map(r => (
+                    <div key={r.id} style={{ padding: "14px", borderRadius: "20px", background: theme.trustBg, border: `1px solid ${theme.border}`, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <div>
+                        <div style={{ fontWeight: 800, color: theme.trustBlue, fontSize: 16 }}>{r.label}</div>
+                        <div style={{ fontSize: 12, fontWeight: 500 }}>{r.desc}</div>
+                      </div>
+                      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 12, background: theme.panelBg, padding: "6px 10px", borderRadius: "10px", fontWeight: 700 }}>{r.code}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            {/* INTERACTIVE LOOKBOOK SWIPE DECK */}
+            <section style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+              <div style={{ width: "100%", position: "relative", height: 530, display: "flex", justifyContent: "center" }}>
+                {currentProduct ? (
+                  <div 
+                    onPointerDown={onPointerDown}
+                    onPointerMove={onPointerMove}
+                    onPointerUp={onPointerUp}
+                    style={{
+                      position: "absolute", width: "100%", height: "500px",
+                      backgroundColor: theme.panelBg, borderRadius: "32px", overflow: "hidden",
+                      boxShadow: theme.clayCard, border: `4px solid ${theme.border}`,
+                      cursor: isDragging ? "grabbing" : "grab", touchAction: "none",
+                      transform: `translateX(${dragOffset.x}px) translateY(${dragOffset.y}px) rotate(${dragOffset.x * 0.05}deg)`,
+                      transition: isDragging ? "none" : "transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+                      zIndex: 10
+                    }}
+                    className="pop-card"
+                  >
+                    <div style={{ width: "100%", height: "300px", position: "relative", userSelect: "none", pointerEvents: "none" }}>
+                      <img src={currentProduct.img} alt={currentProduct.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "80px", background: `linear-gradient(to top, ${theme.panelBg}, transparent)` }} />
+                      <div style={{ position: "absolute", top: 16, left: 16, display: "flex", gap: 6 }}>
+                        {currentProduct.tags.map(t => (
+                          <span key={t} style={{ backgroundColor: "rgba(0,0,0,0.6)", color: "#FFF", backdropFilter: "blur(4px)", padding: "4px 12px", borderRadius: "12px", fontSize: 11, fontWeight: 700 }}>{t}</span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div style={{ padding: "20px" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
+                        <div>
+                          <span style={{ fontSize: 11, fontWeight: 700, color: theme.textMuted, letterSpacing: "1px" }}>{currentProduct.brand}</span>
+                          <h2 style={{ fontFamily: "'Syne', sans-serif", fontSize: 22, fontWeight: 700 }}>{currentProduct.name}</h2>
+                        </div>
+                        <div style={{ textAlign: "right" }}>
+                          <div style={{ fontSize: 20, fontWeight: 800, color: theme.lovePink, fontFamily: "'Space Grotesk', sans-serif" }}>₹{currentProduct.price}</div>
+                          <div style={{ fontSize: 12, color: theme.textMuted, textDecoration: "line-through" }}>₹{currentProduct.orig}</div>
+                        </div>
+                      </div>
+
+                      <p style={{ fontSize: 12, color: theme.textMuted, lineHeight: 1.5, marginBottom: 16 }}>{currentProduct.desc}</p>
+                      
+                      <div style={{ display: "flex", gap: 12, justifyContent: "space-between", alignItems: "center" }}>
+                        <button onClick={() => setDetailProd(currentProduct)} style={{
+                          background: theme.bg, color: theme.textMain, border: `1px solid ${theme.border}`,
+                          padding: "8px 16px", borderRadius: "14px", cursor: "pointer", fontWeight: 600, fontSize: 13, boxShadow: theme.clayBtn
+                        }}>
+                          Configure Product →
+                        </button>
+                        <div style={{ fontSize: 12, fontWeight: 600, color: "#FFC107" }}>★ {currentProduct.rating}</div>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div style={{
+                    width: "100%", height: "500px", backgroundColor: theme.panelBg, borderRadius: "32px",
+                    display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+                    boxShadow: theme.clayCard, border: `1px solid ${theme.border}`, padding: "40px", textAlign: "center"
+                  }}>
+                    <span style={{ fontSize: 54, marginBottom: 16 }}>✨</span>
+                    <h3 style={{ fontFamily: "'Syne', sans-serif", fontSize: 24, marginBottom: 8 }}>Catalog Cycle Completed</h3>
+                    <p style={{ color: theme.textMuted, fontSize: 14, marginBottom: 24 }}>You have processed all localized daily styling drops.</p>
+                    <button onClick={() => setSwipeIdx(0)} style={{
+                      background: theme.trustBg, color: theme.trustBlue, border: "none",
+                      padding: "12px 28px", borderRadius: "16px", fontWeight: 700, cursor: "pointer", boxShadow: theme.clayBtn
+                    }}>
+                      Refresh Styling Queue
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {currentProduct && (
+                <div style={{ display: "flex", alignItems: "center", gap: 24, marginTop: -10 }}>
+                  <button onClick={() => { showToast("Skipped look configuration", "👀"); setSwipeIdx(p => p + 1); }} style={{
+                    width: 56, height: 56, borderRadius: "50%", background: theme.panelBg, border: `2px solid ${theme.border}`,
+                    boxShadow: theme.clayBtn, cursor: "pointer", fontSize: 20, display: "flex", alignItems: "center", justifyContent: "center", color: theme.textMain
+                  }}>✕</button>
+                  <button onClick={() => toggleWishlist(currentProduct.id)} style={{
+                    width: 48, height: 48, borderRadius: "50%", background: theme.panelBg, border: `2px solid ${theme.border}`,
+                    boxShadow: theme.clayBtn, cursor: "pointer", fontSize: 18, display: "flex", alignItems: "center", justifyContent: "center",
+                    color: wishlist.has(currentProduct.id) ? theme.lovePink : theme.textMuted
+                  }}>{wishlist.has(currentProduct.id) ? "♥" : "♡"}</button>
+                  <button onClick={() => { showToast(`Loved ${currentProduct.name}!`, "💖"); setSwipeIdx(p => p + 1); }} style={{
+                    width: 56, height: 56, borderRadius: "50%", background: theme.loveBg, border: `2px solid ${theme.lovePink}`,
+                    boxShadow: theme.clayBtn, cursor: "pointer", fontSize: 20, display: "flex", alignItems: "center", justifyContent: "center", color: theme.lovePink
+                  }}>♥</button>
+                </div>
+              )}
+            </section>
+
+            {/* RIGHT SIDEBAR: CATALOG SPOTLIGHT GRID */}
+            <section style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+              <div style={{ backgroundColor: theme.panelBg, borderRadius: "28px", padding: "24px", boxShadow: theme.clayCard, border: `1px solid ${theme.border}` }} className="pop-card">
+                <h3 style={{ fontFamily: "'Syne', sans-serif", fontSize: 20, marginBottom: 14 }}>🔍 Catalog Spotlight</h3>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+                  {INITIAL_PRODUCTS.map(p => (
+                    <div key={p.id} onClick={() => setDetailProd(p)} style={{
+                      background: theme.bg, borderRadius: "20px", padding: "10px", 
+                      cursor: "pointer", boxShadow: theme.clayBtn, border: `1px solid ${theme.border}`
+                    }}>
+                      <img src={p.img} alt={p.name} style={{ width: "100%", height: "110px", objectFit: "cover", borderRadius: "14px", marginBottom: 8 }} />
+                      <div style={{ fontWeight: 700, fontSize: 12, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.name}</div>
+                      <div style={{ fontSize: 12, color: theme.lovePink, fontWeight: 700, marginTop: 4 }}>₹{p.price}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+          </main>
+
+          {/* ITEM SIZE CONFIGURATION MODAL */}
+          {detailProd && (
+            <div style={{
+              position: "fixed", inset: 0, backgroundColor: "rgba(0,0,0,0.5)",
+              backdropFilter: "blur(6px)", zIndex: 200, display: "flex", alignItems: "center", justifyContent: "center"
+            }}>
+              <div style={{
+                backgroundColor: theme.panelBg, borderRadius: "32px", padding: "32px",
+                maxWidth: "500px", width: "90%", boxShadow: theme.clayCard, border: `4px solid ${theme.border}`
+              }} className="pop-card">
+                <h3 style={{ fontFamily: "'Syne', sans-serif", fontSize: 24, marginBottom: 8 }}>Configure Look</h3>
+                <p style={{ fontSize: 13, color: theme.textMuted, marginBottom: 18 }}>Select parameters for checkout orchestration.</p>
                 
-                // Entrance animation
-                card.style.transform = 'scale(1)';
-                card.style.opacity = '1';
-            }, 180);
-        }
+                <div style={{ display: "flex", gap: 16, marginBottom: 20 }}>
+                  <img src={detailProd.img} style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "20px" }} />
+                  <div>
+                    <div style={{ fontWeight: 700, fontSize: 16 }}>{detailProd.name}</div>
+                    <div style={{ color: theme.lovePink, fontWeight: 800, fontSize: 18, marginTop: 4 }}>₹{detailProd.price}</div>
+                  </div>
+                </div>
 
-        function handleSwipe(action) {
-            if (action === 'like') {
-                bagItemsCount++;
-                document.getElementById('bag-count').innerText = bagItemsCount;
-                alert(`Added ${products[currentIndex].title} to your Shared Bag!`);
-            }
-            
-            // Move to next product infinitely
-            currentIndex = (currentIndex + 1) % products.length;
-            updateCard(currentIndex);
-        }
+                <div style={{ marginBottom: 24 }}>
+                  <label style={{ display: "block", fontSize: 12, fontWeight: 700, marginBottom: 8, color: theme.textMuted }}>SIZE SEGMENTATION</label>
+                  <div style={{ display: "flex", gap: 10 }}>
+                    {detailProd.sizes.map(sz => (
+                      <button key={sz} onClick={() => { handleAddToBag(detailProd, sz); setDetailProd(null); }} style={{
+                        padding: "10px 20px", borderRadius: "14px", background: theme.bg, color: theme.textMain,
+                        border: `1px solid ${theme.border}`, cursor: "pointer", fontWeight: 700, boxShadow: theme.clayBtn
+                      }}>{sz}</button>
+                    ))}
+                  </div>
+                </div>
 
-        function loadItem(index) {
-            currentIndex = index;
-            updateCard(currentIndex);
-        }
+                <button onClick={() => setDetailProd(null)} style={{
+                  width: "100%", padding: "12px", borderRadius: "16px", background: "transparent",
+                  color: theme.textMuted, border: `1px solid ${theme.border}`, cursor: "pointer", fontWeight: 600
+                }}>Cancel Configuration</button>
+              </div>
+            </div>
+          )}
 
-        function filterBuddy(name) {
-            alert(`Opening synchronized shop streaming dashboard with ${name}...`);
-        }
+          {/* ── EXPANDING CHECKOUT BAG SHEET (Spatial Center Expand) ── */}
+          {isBagOpen && (
+            <div style={{
+              position: "fixed", inset: 0, backgroundColor: "rgba(0,0,0,0.6)",
+              backdropFilter: "blur(8px)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center",
+              padding: "20px"
+            }}>
+              <div style={{ position: "absolute", inset: 0 }} onClick={() => setIsBagOpen(false)} />
+              
+              <div style={{
+                position: "relative", backgroundColor: theme.panelBg, borderRadius: "36px",
+                padding: "40px", maxWidth: "640px", width: "100%", maxHeight: "90vh",
+                overflowY: "auto", boxShadow: theme.clayCard, border: `4px solid ${theme.border}`,
+                animation: "popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards"
+              }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
+                  <div>
+                    <h2 style={{ fontFamily: "'Syne', sans-serif", fontSize: 28, fontWeight: 800 }}>Your Styling Bag</h2>
+                    <p style={{ color: theme.textMuted, fontSize: 13 }}>Review items curated for interactive checkout</p>
+                  </div>
+                  <button onClick={() => setIsBagOpen(false)} style={{
+                    background: theme.bg, border: `1px solid ${theme.border}`, width: 44, height: 44,
+                    borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+                    fontWeight: 700, boxShadow: theme.clayBtn, color: theme.textMain
+                  }}>✕</button>
+                </div>
 
-        function openBag() {
-            alert(`Your dynamic shopping bag has ${bagItemsCount} curated collection items loaded.`);
-        }
+                {bag.length > 0 ? (
+                  <>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 16, marginBottom: 32 }}>
+                      {bag.map(item => (
+                        <div key={item.uniqueId} style={{
+                          display: "flex", alignItems: "center", gap: 16, padding: "16px",
+                          borderRadius: "24px", background: theme.bg, boxShadow: theme.clayBtn, border: `1px solid ${theme.border}`
+                        }}>
+                          <img src={item.img} style={{ width: "70px", height: "70px", objectFit: "cover", borderRadius: "16px" }} />
+                          <div style={{ flex: 1 }}>
+                            <div style={{ fontWeight: 700, fontSize: 15 }}>{item.name}</div>
+                            <div style={{ fontSize: 12, color: theme.textMuted }}>Size: <span style={{ fontWeight: 700, color: theme.textMain }}>{item.selectedSize}</span></div>
+                            <div style={{ color: theme.lovePink, fontWeight: 700, fontSize: 14, marginTop: 4 }}>₹{item.price}</div>
+                          </div>
+                          <button onClick={() => handleRemoveFromBag(item.uniqueId)} style={{
+                            background: "transparent", border: "none", color: theme.lovePink,
+                            cursor: "pointer", fontWeight: 600, fontSize: 13, padding: "8px"
+                          }}>Remove</button>
+                        </div>
+                      ))}
+                    </div>
 
-        function resetApp() {
-            currentIndex = 0;
-            updateCard(0);
-        }
-    </script>
+                    <div style={{
+                      padding: "20px", borderRadius: "24px", backgroundColor: theme.bg,
+                      boxShadow: theme.clayInput, marginBottom: 32, border: `1px solid ${theme.border}`
+                    }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 14, marginBottom: 10 }}>
+                        <span style={{ color: theme.textMuted }}>Subtotal Aggregate</span>
+                        <span style={{ fontWeight: 600 }}>₹{bag.reduce((acc, curr) => acc + curr.price, 0)}</span>
+                      </div>
+                      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 14, marginBottom: 14 }}>
+                        <span style={{ color: theme.textMuted }}>Trendr Processing Fee</span>
+                        <span style={{ color: theme.successMint, fontWeight: 600 }}>FREE</span>
+                      </div>
+                      <div style={{ height: "2px", backgroundColor: theme.border, marginBottom: 14 }} />
+                      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 18, fontWeight: 800 }}>
+                        <span>Estimated Total</span>
+                        <span style={{ color: theme.lovePink }}>₹{bag.reduce((acc, curr) => acc + curr.price, 0)}</span>
+                      </div>
+                    </div>
+
+                    <button onClick={() => {
+                      showToast("Order Dispatched Successfully!", "🎉");
+                      setBag([]);
+                      setIsBagOpen(false);
+                    }} style={{
+                      width: "100%", padding: "16px", borderRadius: "20px", border: "none",
+                      background: `linear-gradient(135deg, ${theme.lovePink}, ${theme.connectPurple})`,
+                      color: "#FFF", fontFamily: "'Syne', sans-serif", fontSize: 16, fontWeight: 700,
+                      cursor: "pointer", boxShadow: theme.clayCard
+                    }}>
+                      Authorize Secure Checkout
+                    </button>
+                  </>
+                ) : (
+                  <div style={{ padding: "40px 0", textAlign: "center" }}>
+                    <div style={{ fontSize: 44, marginBottom: 12 }}>🛍️</div>
+                    <div style={{ fontWeight: 700, color: theme.textMuted }}>Your checkout pipeline is empty.</div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* GLOBAL NOTIFICATION NOTIFIER */}
+          {toast && (
+            <div style={{
+              position: "fixed", bottom: 40, right: 40, backgroundColor: theme.panelBg,
+              border: `2px solid ${theme.border}`, borderRadius: "24px", padding: "16px 24px",
+              display: "flex", alignItems: "center", gap: 12, zIndex: 2000,
+              boxShadow: theme.clayCard, animation: "popIn 0.3s ease forwards"
+            }}>
+              <span style={{ fontSize: 22 }}>{toast.emoji}</span>
+              <span style={{ fontSize: 14, fontWeight: 700, color: theme.textMain }}>{toast.msg}</span>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // Render App component directly down to HTML DOM node root
+    const root = Pollock = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
 </body>
 </html>
