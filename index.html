@@ -5,19 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trendr.web - Claymorphic Dashboard</title>
     
-    <!-- 1. LOAD REACT AND BABEL COMPILER VIA CDN -->
+    <!-- LOAD REACT AND BABEL COMPILER VIA CDN -->
     <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body>
 
-    <!-- 2. THE TARGET ROOT ELEMENT FOR RAW WEBPAGE RENDERING -->
+    <!-- TARGET ROOT ELEMENT -->
     <div id="root"></div>
 
-    <!-- 3. PLACE THE COMPONENT CODE INSIDE A BABEL TEXT SCRIPT -->
+    <!-- CODE CONTAINER -->
     <script type="text/transform/babel">
-        // Unpack React Hooks for CDN environment deployment
         const { useState, useRef, useEffect } = React;
 
         /* ─── CLAYMORPHISM & GLOBAL DESIGN SYSTEMS ─── */
@@ -358,8 +357,8 @@
           );
         }
 
-        // Mount to Dom entry node
-        const root = Bakel = ReactDOM.createRoot(document.getElementById('root'));
+        // Mount safely to DOM root
+        const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<Trendr />);
     </script>
 </body>
